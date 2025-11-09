@@ -21,7 +21,7 @@ class Position {
     }
 }
 
-const Colors = ['R', 'O', 'B', 'G', 'W', 'Y']
+const Colors = ['R', 'O', 'B', 'G', 'W', 'Y', 'E']
 
 class Cubelet {
     constructor(x, y, z) {
@@ -30,9 +30,13 @@ class Cubelet {
 }
 
 class CubeletFace {
-    constructor(orientation, color) {
+    constructor(orientation) {
         this.orientation = orientation
-        this.color = color
+        this.color = undefined
+    }
+
+    coloring() {
+
     }
 }
 
@@ -43,17 +47,55 @@ class Layer {
 }
 
 class ColoredCubelet {
-    constructor(faces, x, y, z) {
+    constructor(x, y, z) {
         this.cubelet = new Cubelet(x, y, z)
-        faces = {
-            // 6 CubeletFace initialized with Orientations
-        }
+        this.faces = [
+            new CubeletFace(FRONT_ORIENTATED, 'E'),
+            new CubeletFace(BACK_ORIENTATED, 'E'),
+            new CubeletFace(TOP_ORIENTATED, 'E'),
+            new CubeletFace(BOTTOM_ORIENTATED, 'E'),
+            new CubeletFace(LEFT_ORIENTATED, 'E'),
+            new CubeletFace(RIGHT_ORIENTATED, 'E')
+        ]
+    }
+
+    coloring() {
+
     }
 }
 
 class Cube {
     constructor() {
-        // 26 ColoredCubelets
+        this.cubelets = [
+            new ColoredCubelet(1,0,0),
+            new ColoredCubelet(1,1,0),
+            new ColoredCubelet(1,-1,0),
+            new ColoredCubelet(1,1,1),
+            new ColoredCubelet(1,1,-1),
+            new ColoredCubelet(1,-1,1),
+            new ColoredCubelet(1,-1,-1),
+            new ColoredCubelet(-1,0,0),
+            new ColoredCubelet(-1,1,0),
+            new ColoredCubelet(-1,-1,0),
+            new ColoredCubelet(-1,1,1),
+            new ColoredCubelet(-1,1,-1),
+            new ColoredCubelet(-1,-1,1),
+            new ColoredCubelet(-1,-1,-1),
+            // new ColoredCubelet(0,0,0),
+            new ColoredCubelet(0,1,0),
+            new ColoredCubelet(0,-1,0),
+            new ColoredCubelet(0,1,1),
+            new ColoredCubelet(0,1,-1),
+            new ColoredCubelet(0,-1,1),
+            new ColoredCubelet(0,-1,-1),
+
+            new ColoredCubelet(0,0,1),
+            new ColoredCubelet(0,0,-1),
+            new ColoredCubelet(1,0,-1),
+            new ColoredCubelet(-1,0,-1),
+            new ColoredCubelet(1,0,1),
+            new ColoredCubelet(-1,0,1),
+        ]
     }
 }
 
