@@ -6,7 +6,12 @@ class Orientation {
     }
 }
 
-// const FRONT_ORIENTATED = new Orientation()
+const FRONT_ORIENTATED = new Orientation(1, 0, 0)
+const BACK_ORIENTATED = new Orientation(-1, 0, 0)
+const TOP_ORIENTATED = new Orientation(0, 0, 1)
+const BOTTOM_ORIENTATED = new Orientation(0, 0, -1)
+const LEFT_ORIENTATED = new Orientation(0, -1, 0)
+const RIGHT_ORIENTATED = new Orientation(0, 1, 0)
 
 class Position {
     constructor(x, y, z) {
@@ -16,7 +21,7 @@ class Position {
     }
 }
 
-let Colors = ['R', 'O', 'B', 'G', 'W', 'Y']
+const Colors = ['R', 'O', 'B', 'G', 'W', 'Y']
 
 class Cubelet {
     constructor(x, y, z) {
