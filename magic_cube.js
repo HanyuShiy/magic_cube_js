@@ -6,12 +6,15 @@ class Orientation {
     }
 }
 
-const FRONT_ORIENTATED = new Orientation(1, 0, 0)
-const BACK_ORIENTATED = new Orientation(-1, 0, 0)
-const TOP_ORIENTATED = new Orientation(0, 0, 1)
-const BOTTOM_ORIENTATED = new Orientation(0, 0, -1)
-const LEFT_ORIENTATED = new Orientation(0, -1, 0)
-const RIGHT_ORIENTATED = new Orientation(0, 1, 0)
+const Orientations = Object.freeze({
+        FRONT_ORIENTATED: new Orientation(1, 0, 0),
+        BACK_ORIENTATED: Orientation(-1, 0, 0),
+        TOP_ORIENTATED: Orientation(0, 0, 1),
+        BOTTOM_ORIENTATED: Orientation(0, 0, -1),
+        LEFT_ORIENTATED: Orientation(0, -1, 0),
+        RIGHT_ORIENTATED: Orientation(0, 1, 0),
+    }
+)
 
 class Position {
     constructor(x, y, z) {
@@ -21,7 +24,15 @@ class Position {
     }
 }
 
-const Colors = ['R', 'O', 'B', 'G', 'W', 'Y', 'E']
+const Colors = Object.freeze({
+    RED: 'R',
+    ORANGE: 'O',
+    BLUE: 'B',
+    GREEN: 'G',
+    WHITE: 'W',
+    YELLOW: 'Y',
+    EMPTY: '_'
+})
 
 class Cubelet {
     constructor(x, y, z) {
@@ -32,7 +43,7 @@ class Cubelet {
 class CubeletFace {
     constructor(orientation) {
         this.orientation = orientation
-        this.color = undefined
+        this.color = Colors.EMPTY
     }
 
     coloring() {
@@ -50,12 +61,12 @@ class ColoredCubelet {
     constructor(x, y, z) {
         this.cubelet = new Cubelet(x, y, z)
         this.faces = [
-            new CubeletFace(FRONT_ORIENTATED, 'E'),
-            new CubeletFace(BACK_ORIENTATED, 'E'),
-            new CubeletFace(TOP_ORIENTATED, 'E'),
-            new CubeletFace(BOTTOM_ORIENTATED, 'E'),
-            new CubeletFace(LEFT_ORIENTATED, 'E'),
-            new CubeletFace(RIGHT_ORIENTATED, 'E')
+            new CubeletFace(Orientations.FRONT_ORIENTATED),
+            new CubeletFace(Orientations.BACK_ORIENTATED),
+            new CubeletFace(Orientations.TOP_ORIENTATED),
+            new CubeletFace(Orientations.BOTTOM_ORIENTATED),
+            new CubeletFace(Orientations.LEFT_ORIENTATED),
+            new CubeletFace(Orientations.RIGHT_ORIENTATED)
         ]
     }
 
@@ -67,39 +78,38 @@ class ColoredCubelet {
 class Cube {
     constructor() {
         this.cubelets = [
-            new ColoredCubelet(1,0,0),
-            new ColoredCubelet(1,1,0),
-            new ColoredCubelet(1,-1,0),
-            new ColoredCubelet(1,1,1),
-            new ColoredCubelet(1,1,-1),
-            new ColoredCubelet(1,-1,1),
-            new ColoredCubelet(1,-1,-1),
-            new ColoredCubelet(-1,0,0),
-            new ColoredCubelet(-1,1,0),
-            new ColoredCubelet(-1,-1,0),
-            new ColoredCubelet(-1,1,1),
-            new ColoredCubelet(-1,1,-1),
-            new ColoredCubelet(-1,-1,1),
-            new ColoredCubelet(-1,-1,-1),
+            new ColoredCubelet(1, 0, 0),
+            new ColoredCubelet(1, 1, 0),
+            new ColoredCubelet(1, -1, 0),
+            new ColoredCubelet(1, 1, 1),
+            new ColoredCubelet(1, 1, -1),
+            new ColoredCubelet(1, -1, 1),
+            new ColoredCubelet(1, -1, -1),
+            new ColoredCubelet(-1, 0, 0),
+            new ColoredCubelet(-1, 1, 0),
+            new ColoredCubelet(-1, -1, 0),
+            new ColoredCubelet(-1, 1, 1),
+            new ColoredCubelet(-1, 1, -1),
+            new ColoredCubelet(-1, -1, 1),
+            new ColoredCubelet(-1, -1, -1),
             // new ColoredCubelet(0,0,0),
-            new ColoredCubelet(0,1,0),
-            new ColoredCubelet(0,-1,0),
-            new ColoredCubelet(0,1,1),
-            new ColoredCubelet(0,1,-1),
-            new ColoredCubelet(0,-1,1),
-            new ColoredCubelet(0,-1,-1),
-
-            new ColoredCubelet(0,0,1),
-            new ColoredCubelet(0,0,-1),
-            new ColoredCubelet(1,0,-1),
-            new ColoredCubelet(-1,0,-1),
-            new ColoredCubelet(1,0,1),
-            new ColoredCubelet(-1,0,1),
+            new ColoredCubelet(0, 1, 0),
+            new ColoredCubelet(0, -1, 0),
+            new ColoredCubelet(0, 1, 1),
+            new ColoredCubelet(0, 1, -1),
+            new ColoredCubelet(0, -1, 1),
+            new ColoredCubelet(0, -1, -1),
+            new ColoredCubelet(0, 0, 1),
+            new ColoredCubelet(0, 0, -1),
+            new ColoredCubelet(1, 0, -1),
+            new ColoredCubelet(-1, 0, -1),
+            new ColoredCubelet(1, 0, 1),
+            new ColoredCubelet(-1, 0, 1),
         ]
     }
 }
 
-let color = 'R'
-let a = new CubeletFace(1, 1, 1, 'R')
+
+let a = new CubeletFace(1, 1, 1)
 
 console.log(a)
