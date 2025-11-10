@@ -92,7 +92,7 @@ class ColoredCubelet {
     }
 
     coloring(orientation, color) {
-        this.faces.forEach((face, index) => {
+        this.faces.forEach((face) => {
             if (face.orientation === orientation) {
                 face.coloring(color)
             }
@@ -158,10 +158,10 @@ class Cube {
         this.cubelets.forEach((cubelet) => {
             if (Layers.FRONT_LAYER.contains(cubelet)) cubelet.coloring(Orientations.FRONT_ORIENTATED, Colors.RED)
             if (Layers.BACK_LAYER.contains(cubelet)) cubelet.coloring(Orientations.BACK_ORIENTATED, Colors.ORANGE)
-            if (Layers.TOP_LAYER.contains(cubelet)) cubelet.coloring((Orientations.TOP_ORIENTATED, Colors.WHITE))
-            if (Layers.BOTTOM_LAYER.contains(cubelet)) cubelet.coloring((Orientations.BOTTOM_ORIENTATED, Colors.YELLOW))
-            if (Layers.LEFT_LAYER.contains(cubelet)) cubelet.coloring((Orientations.LEFT_ORIENTATED, Colors.GREEN))
-            if (Layers.RIGHT_LAYER.contains(cubelet)) cubelet.coloring((Orientations.RIGHT_ORIENTATED, Colors.BLUE))
+            if (Layers.TOP_LAYER.contains(cubelet)) cubelet.coloring(Orientations.TOP_ORIENTATED, Colors.WHITE)
+            if (Layers.BOTTOM_LAYER.contains(cubelet)) cubelet.coloring(Orientations.BOTTOM_ORIENTATED, Colors.YELLOW)
+            if (Layers.LEFT_LAYER.contains(cubelet)) cubelet.coloring(Orientations.LEFT_ORIENTATED, Colors.GREEN)
+            if (Layers.RIGHT_LAYER.contains(cubelet)) cubelet.coloring(Orientations.RIGHT_ORIENTATED, Colors.BLUE)
         })
     }
 
@@ -178,6 +178,73 @@ class Cube {
         }
         return new Face(front)
     }
+
+    getBack() {
+        let back = Array.from({length: 3}, () => Array(3).fill(Colors.EMPTY))
+        for (const colored_cubelet of this.cubelets) {
+            if (Layers.BACK_LAYER.contains(colored_cubelet)) {
+                const y = colored_cubelet.cubelet.position.y + 1
+                const z = colored_cubelet.cubelet.position.z + 1
+
+                back[y][z] = colored_cubelet.getFaceOn(Orientations.BACK_ORIENTATED)
+            }
+        }
+        return new Face(back)
+    }
+
+    getLeft() {
+        let left = Array.from({length: 3}, () => Array(3).fill(Colors.EMPTY))
+        for (const colored_cubelet of this.cubelets) {
+            if (Layers.LEFT_LAYER.contains(colored_cubelet)) {
+                const z = colored_cubelet.cubelet.position.z + 1
+                const x = colored_cubelet.cubelet.position.x + 1
+
+                left[z][x] = colored_cubelet.getFaceOn(Orientations.LEFT_ORIENTATED)
+            }
+        }
+        return new Face(left)
+    }
+
+    getRight() {
+        let right = Array.from({length: 3}, () => Array(3).fill(Colors.EMPTY))
+        for (const colored_cubelet of this.cubelets) {
+            if (Layers.RIGHT_LAYER.contains(colored_cubelet)) {
+                const z = colored_cubelet.cubelet.position.z + 1
+                const x = colored_cubelet.cubelet.position.x + 1
+
+                right[z][x] = colored_cubelet.getFaceOn(Orientations.RIGHT_ORIENTATED)
+            }
+        }
+        return new Face(right)
+    }
+
+    getTop() {
+        let top = Array.from({length: 3}, () => Array(3).fill(Colors.EMPTY))
+        for (const colored_cubelet of this.cubelets) {
+            if (Layers.TOP_LAYER.contains(colored_cubelet)) {
+                const y = colored_cubelet.cubelet.position.y + 1
+                const x = colored_cubelet.cubelet.position.x + 1
+
+                top[x][y] = colored_cubelet.getFaceOn(Orientations.TOP_ORIENTATED)
+            }
+        }
+        return new Face(top)
+    }
+
+    getBottom() {
+        let bottom = Array.from({length: 3}, () => Array(3).fill(Colors.EMPTY))
+        for (const colored_cubelet of this.cubelets) {
+            if (Layers.BOTTOM_LAYER.contains(colored_cubelet)) {
+                const y = colored_cubelet.cubelet.position.y + 1
+                const x = colored_cubelet.cubelet.position.x + 1
+
+                bottom[x][y] = colored_cubelet.getFaceOn(Orientations.BOTTOM_ORIENTATED)
+            }
+        }
+        return new Face(bottom)
+    }
+
+
 }
 
 
@@ -185,3 +252,8 @@ let a = new ColoredCubelet(1, 1, 0)
 let b = new Cube()
 console.log(Layers.FRONT_LAYER.contains(a))
 b.getFront().print()
+b.getBack().print()
+b.getLeft().print()
+b.getRight().print()
+b.getTop().print()
+b.getBottom().print()
