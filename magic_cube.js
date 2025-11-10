@@ -46,8 +46,8 @@ class CubeletFace {
         this.color = Colors.EMPTY
     }
 
-    coloring() {
-
+    coloring(color) {
+        this.color = color
     }
 }
 
@@ -70,8 +70,12 @@ class ColoredCubelet {
         ]
     }
 
-    coloring() {
-
+    coloring(orientation, color) {
+        this.faces.forEach((face, index) => {
+            if (face.orientation === orientation) {
+                face.coloring(color)
+            }
+        })
     }
 }
 
@@ -107,6 +111,13 @@ class Cube {
             new ColoredCubelet(-1, 0, 1),
         ]
     }
+
+    // wip: 
+    // coloring() {
+    //     this.cubelets.forEach((cubelet) =>{
+    //         if ()
+    //     })
+    // }
 }
 
 
