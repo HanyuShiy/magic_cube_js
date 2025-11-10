@@ -53,28 +53,28 @@ class CubeletFace {
 
 class Layer {
     constructor(contains) {
-        this.contains = new Function(contains)
+        this.contains = contains
     }
 }
 
 const Layers = Object.freeze({
-    FRONT_LAYER: new Layer((cubelet) => {
-        if (cubelet.position === {x: 1, y: 0, z: 0}) return true
+    FRONT_LAYER: new Layer((colored_cubelet) => {
+        if (colored_cubelet.cubelet.position.x === 1) return true
     }),
-    BACK_LAYER: new Layer((cubelet) => {
-        if (cubelet.position === {x: -1, y: 0, z: 0}) return true
+    BACK_LAYER: new Layer((colored_cubelet) => {
+        if (colored_cubelet.cubelet.position.x === -1) return true
     }),
-    TOP_LAYER: new Layer((cubelet) => {
-        if (cubelet.position === {x: 0, y: 0, z: 1}) return true
+    TOP_LAYER: new Layer((colored_cubelet) => {
+        if (colored_cubelet.cubelet.position.z === 1) return true
     }),
-    BOTTOM_LAYER: new Layer((cubelet) => {
-        if (cubelet.position === {x: 0, y: 0, z: -1}) return true
+    BOTTOM_LAYER: new Layer((colored_cubelet) => {
+        if (colored_cubelet.cubelet.position.z === 1) return true
     }),
-    LEFT_LAYER: new Layer((cubelet) => {
-        if (cubelet.position === {x: 0, y: -1, z: 0}) return true
+    LEFT_LAYER: new Layer((colored_cubelet) => {
+        if (colored_cubelet.cubelet.position.y === -1) return true
     }),
-    RIGHT_LAYER: new Layer((cubelet) => {
-        if (cubelet.position === {x: 0, y: 1, z: 0}) return true
+    RIGHT_LAYER: new Layer((colored_cubelet) => {
+        if (colored_cubelet.cubelet.position.y === 1) return true
     })
 })
 
@@ -131,17 +131,22 @@ class Cube {
             new ColoredCubelet(1, 0, 1),
             new ColoredCubelet(-1, 0, 1),
         ]
+        this.coloring()
     }
 
-    // wip:
-    // coloring() {
-    //     this.cubelets.forEach((cubelet) =>{
-    //         if ()
-    //     })
-    // }
+    coloring() {
+        this.cubelets.forEach((cubelet) => {
+            if (Layers.FRONT_LAYER.contains(cubelet)) cubelet.coloring(Orientations.FRONT_ORIENTATED, Colors.RED)
+            if (Layers.BACK_LAYER.contains(cubelet)) cubelet.coloring(Orientations.BACK_ORIENTATED, Colors.ORANGE)
+            if (Layers.TOP_LAYER.contains(cubelet)) cubelet.coloring((Orientations.TOP_ORIENTATED, Colors.WHITE))
+            if (Layers.BOTTOM_LAYER.contains(cubelet)) cubelet.coloring((Orientations.BOTTOM_ORIENTATED, Colors.YELLOW))
+            if (Layers.LEFT_LAYER.contains(cubelet)) cubelet.coloring((Orientations.LEFT_ORIENTATED, Colors.GREEN))
+            if (Layers.RIGHT_LAYER.contains(cubelet)) cubelet.coloring((Orientations.RIGHT_ORIENTATED, Colors.BLUE))
+        })
+    }
 }
 
 
-let a = new CubeletFace(1, 1, 1)
-
-console.log(a)
+let a = new ColoredCubelet(1, 1, 0)
+let b = new Cube()
+console.log(Layers.FRONT_LAYER.contains(a))
