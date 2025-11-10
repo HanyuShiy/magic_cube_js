@@ -98,6 +98,26 @@ class ColoredCubelet {
             }
         })
     }
+
+    getFaceOn(orientation) {
+        for (const face of this.faces) {
+            if (face.orientation === orientation) {
+                return face.color
+            }
+        }
+    }
+}
+
+class Face {
+    constructor(colors) {
+        this.colors = colors
+    }
+
+    print() {
+        this.colors.forEach((color) => {
+            console.log(color)
+        })
+    }
 }
 
 class Cube {
@@ -144,9 +164,24 @@ class Cube {
             if (Layers.RIGHT_LAYER.contains(cubelet)) cubelet.coloring((Orientations.RIGHT_ORIENTATED, Colors.BLUE))
         })
     }
+
+
+    getFront() {
+        let front = Array.from({length: 3}, () => Array(3).fill(Colors.EMPTY))
+        for (const colored_cubelet of this.cubelets) {
+            if (Layers.FRONT_LAYER.contains(colored_cubelet)) {
+                const y = colored_cubelet.cubelet.position.y + 1
+                const z = colored_cubelet.cubelet.position.z + 1
+
+                front[y][z] = colored_cubelet.getFaceOn(Orientations.FRONT_ORIENTATED)
+            }
+        }
+        return new Face(front)
+    }
 }
 
 
 let a = new ColoredCubelet(1, 1, 0)
 let b = new Cube()
 console.log(Layers.FRONT_LAYER.contains(a))
+b.getFront().print()
