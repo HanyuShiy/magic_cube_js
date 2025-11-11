@@ -6,10 +6,12 @@ class Orientation {
     }
 
     rotateX(angle) {
-        const oldY = this.y;
-        const oldZ = this.z;
-        this.y = Math.round(oldY * Math.cos(angle) - oldZ * Math.sin(angle));
-        this.z = Math.round(oldY * Math.sin(angle) + oldZ * Math.cos(angle));
+        let ori = new Orientation(this.x, this.y, this.z)
+        const oldY = ori.y;
+        const oldZ = ori.z;
+        ori.y = Math.round(oldY * Math.cos(angle) - oldZ * Math.sin(angle));
+        ori.z = Math.round(oldY * Math.sin(angle) + oldZ * Math.cos(angle));
+        return ori
     }
 
 }
@@ -68,7 +70,7 @@ class CubeletFace {
     }
 
     rotateXClockwise(angle) {
-        this.orientation.rotateX(angle)
+        this.orientation = this.orientation.rotateX(angle)
     }
 }
 
