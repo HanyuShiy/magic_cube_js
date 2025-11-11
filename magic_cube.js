@@ -4,17 +4,29 @@ class Orientation {
         this.y = y
         this.z = z
     }
+
+    rotateX(angle) {
+        const oldY = this.y;
+        const oldZ = this.z;
+        this.y = Math.round(oldY * Math.cos(angle) - oldZ * Math.sin(angle));
+        this.z = Math.round(oldY * Math.sin(angle) + oldZ * Math.cos(angle));
+    }
+
 }
 
-const Orientations = Object.freeze({
-        FRONT_ORIENTATED: new Orientation(1, 0, 0),
-        BACK_ORIENTATED: new Orientation(-1, 0, 0),
-        TOP_ORIENTATED: new Orientation(0, 0, 1),
-        BOTTOM_ORIENTATED: new Orientation(0, 0, -1),
-        LEFT_ORIENTATED: new Orientation(0, -1, 0),
-        RIGHT_ORIENTATED: new Orientation(0, 1, 0),
-    }
-)
+let Orientations = {
+    FRONT_ORIENTATED: Object.freeze(new Orientation(1, 0, 0)),
+    BACK_ORIENTATED: Object.freeze(new Orientation(-1, 0, 0)),
+    TOP_ORIENTATED: Object.freeze(new Orientation(0, 0, 1)),
+    BOTTOM_ORIENTATED: Object.freeze(new Orientation(0, 0, -1)),
+    LEFT_ORIENTATED: Object.freeze(new Orientation(0, -1, 0)),
+    RIGHT_ORIENTATED: Object.freeze(new Orientation(0, 1, 0)),
+};
+Orientations.X_AXIS = Orientations.FRONT_ORIENTATED;
+Orientations.Y_AXIS = Orientations.RIGHT_ORIENTATED;
+Orientations.Z_AXIS = Orientations.TOP_ORIENTATED;
+
+Object.freeze(Orientations);
 
 class Position {
     constructor(x, y, z) {
@@ -22,21 +34,26 @@ class Position {
         this.y = y
         this.z = z
     }
+
+    rotateX(angle) {
+        const oldY = this.y;
+        const oldZ = this.z;
+        this.y = oldY * Math.cos(angle) - oldZ * Math.sin(angle);
+        this.z = oldY * Math.sin(angle) + oldZ * Math.cos(angle);
+    }
 }
 
 const Colors = Object.freeze({
-    RED: 'R',
-    ORANGE: 'O',
-    BLUE: 'B',
-    GREEN: 'G',
-    WHITE: 'W',
-    YELLOW: 'Y',
-    EMPTY: '_'
+    RED: 'R', ORANGE: 'O', BLUE: 'B', GREEN: 'G', WHITE: 'W', YELLOW: 'Y', EMPTY: '_'
 })
 
 class Cubelet {
     constructor(x, y, z) {
         this.position = new Position(x, y, z)
+    }
+
+    rotateXClockwise(angle) {
+        this.position.rotateX(angle)
     }
 }
 
@@ -49,46 +66,48 @@ class CubeletFace {
     coloring(color) {
         this.color = color
     }
+
+    rotateXClockwise(angle) {
+        this.orientation.rotateX(angle)
+    }
 }
 
 class Layer {
-    constructor(contains) {
+    constructor(contains, axis_vec) {
         this.contains = contains
+        this.axis = axis_vec
+    }
+
+    getAxis() {
+        return this.axis
     }
 }
 
 const Layers = Object.freeze({
-    FRONT_LAYER: new Layer((colored_cubelet) => {
-        if (colored_cubelet.cubelet.position.x === 1) return true
-    }),
-    BACK_LAYER: new Layer((colored_cubelet) => {
-        if (colored_cubelet.cubelet.position.x === -1) return true
-    }),
-    TOP_LAYER: new Layer((colored_cubelet) => {
-        if (colored_cubelet.cubelet.position.z === 1) return true
-    }),
-    BOTTOM_LAYER: new Layer((colored_cubelet) => {
-        if (colored_cubelet.cubelet.position.z === 1) return true
-    }),
-    LEFT_LAYER: new Layer((colored_cubelet) => {
-        if (colored_cubelet.cubelet.position.y === -1) return true
-    }),
-    RIGHT_LAYER: new Layer((colored_cubelet) => {
-        if (colored_cubelet.cubelet.position.y === 1) return true
-    })
+    FRONT_LAYER: new Layer(colored_cubelet =>
+            colored_cubelet.cubelet.position.x === 1,
+        Orientations.X_AXIS),
+    BACK_LAYER: new Layer(colored_cubelet =>
+            colored_cubelet.cubelet.position.x === -1,
+        Orientations.X_AXIS),
+    TOP_LAYER: new Layer(colored_cubelet =>
+            colored_cubelet.cubelet.position.z === 1,
+        Orientations.Z_AXIS),
+    BOTTOM_LAYER: new Layer(colored_cubelet =>
+            colored_cubelet.cubelet.position.z === -1,
+        Orientations.Z_AXIS),
+    LEFT_LAYER: new Layer(colored_cubelet =>
+            colored_cubelet.cubelet.position.y === -1,
+        Orientations.Y_AXIS),
+    RIGHT_LAYER: new Layer(colored_cubelet =>
+            colored_cubelet.cubelet.position.y === 1,
+        Orientations.Y_AXIS)
 })
 
 class ColoredCubelet {
     constructor(x, y, z) {
         this.cubelet = new Cubelet(x, y, z)
-        this.faces = [
-            new CubeletFace(Orientations.FRONT_ORIENTATED),
-            new CubeletFace(Orientations.BACK_ORIENTATED),
-            new CubeletFace(Orientations.TOP_ORIENTATED),
-            new CubeletFace(Orientations.BOTTOM_ORIENTATED),
-            new CubeletFace(Orientations.LEFT_ORIENTATED),
-            new CubeletFace(Orientations.RIGHT_ORIENTATED)
-        ]
+        this.faces = [new CubeletFace(Orientations.FRONT_ORIENTATED), new CubeletFace(Orientations.BACK_ORIENTATED), new CubeletFace(Orientations.TOP_ORIENTATED), new CubeletFace(Orientations.BOTTOM_ORIENTATED), new CubeletFace(Orientations.LEFT_ORIENTATED), new CubeletFace(Orientations.RIGHT_ORIENTATED)]
     }
 
     coloring(orientation, color) {
@@ -105,6 +124,20 @@ class ColoredCubelet {
                 return face.color
             }
         }
+    }
+
+    rotateAround(axis, angle) {
+        if (axis === Orientations.X_AXIS) {
+            this.rotateXClockwise(angle)
+        }
+    }
+
+    rotateXClockwise(angle) {
+        this.cubelet.rotateXClockwise(angle)
+        this.faces.forEach((face) => {
+            face.rotateXClockwise(angle)
+        })
+
     }
 }
 
@@ -149,8 +182,7 @@ class Cube {
             new ColoredCubelet(1, 0, -1),
             new ColoredCubelet(-1, 0, -1),
             new ColoredCubelet(1, 0, 1),
-            new ColoredCubelet(-1, 0, 1),
-        ]
+            new ColoredCubelet(-1, 0, 1),]
         this.coloring()
     }
 
@@ -244,12 +276,23 @@ class Cube {
         return new Face(bottom)
     }
 
+    rotateClockwise(layer, angle, steps) {
+        for (let i = 0; i < steps; i++) {
+            for (let colored_cubelet of this.cubelets) {
+                if (layer.contains(colored_cubelet)) {
+                    colored_cubelet.rotateAround(layer.getAxis(), angle)
+                }
+            }
+        }
+    }
+
 
 }
 
 
 let a = new ColoredCubelet(1, 1, 0)
 let b = new Cube()
+b.rotateClockwise(Layers.FRONT_LAYER, Math.PI / 2, 1)
 console.log(Layers.FRONT_LAYER.contains(a))
 b.getFront().print()
 b.getBack().print()
