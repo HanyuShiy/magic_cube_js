@@ -9,11 +9,10 @@ class Orientation {
         let ori = new Orientation(this.x, this.y, this.z)
         const oldY = ori.y;
         const oldZ = ori.z;
-        ori.y = Math.round(oldY * Math.cos(angle) - oldZ * Math.sin(angle));
-        ori.z = Math.round(oldY * Math.sin(angle) + oldZ * Math.cos(angle));
+        ori.y = oldY * Math.round(Math.cos(angle)) - oldZ * Math.round(Math.sin(angle));
+        ori.z = oldY * Math.round(Math.sin(angle)) + oldZ * Math.round(Math.cos(angle));
         return ori
     }
-
 }
 
 let Orientations = {
@@ -40,8 +39,8 @@ class Position {
     rotateX(angle) {
         const oldY = this.y;
         const oldZ = this.z;
-        this.y = oldY * Math.cos(angle) - oldZ * Math.sin(angle);
-        this.z = oldY * Math.sin(angle) + oldZ * Math.cos(angle);
+        this.y = oldY * Math.round(Math.cos(angle)) - oldZ * Math.round(Math.sin(angle));
+        this.z = oldY * Math.round(Math.sin(angle)) + oldZ * Math.round(Math.cos(angle));
     }
 }
 
@@ -139,7 +138,6 @@ class ColoredCubelet extends Cubelet {
         this.faces.forEach((face) => {
             face.rotateXClockwise(angle)
         })
-
     }
 }
 
